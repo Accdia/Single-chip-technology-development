@@ -1,0 +1,231 @@
+A51 MACRO ASSEMBLER  MAIN                                                                 11/11/2021 09:25:05 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+NO OBJECT MODULE REQUESTED
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE main.a51 SET(SMALL) DEBUG PRINT(.\Listings\main.lst) OBJECT(.\Objects\m
+                      ain.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+  0033                 1     BUF             EQU   33H       ;存放计数值
+  0032                 2     SBF             EQU   32H       ;存放秒值
+  0031                 3     MBF             EQU   31H       ;存放分值
+  0030                 4     HBF             EQU       30H
+                       5     
+0000                   6     ORG 0000H
+0000 020100            7             LJMP START
+001B                   8     ORG 001BH
+001B 020185            9             LJMP CLOCK
+0100                  10     ORG 0100H
+0100                  11     START:
+0100 7840             12             MOV R0,#40H  ;40H-47H显示缓冲区，依次存放
+0102 7400             13             MOV A,#00H      ;时高位、分低位，0A，分高位、分低位、0A（横线）
+                      14             
+0104 F6               15             MOV @R0,A    ;以及秒高位、秒底位
+0105 08               16             INC R0
+                      17             
+0106 F6               18             MOV @R0,A
+0107 08               19             INC R0
+                      20             
+0108 740A             21             MOV A,#0AH   ;
+010A F6               22             MOV @R0,A    ;42H(横线)
+010B 08               23             INC R0
+                      24             
+010C 7400             25             MOV A,#00H       ;
+010E F6               26             MOV @R0,A        ;43H
+010F 08               27             INC R0
+                      28             
+0110 F6               29             MOV @R0,A        ;44H
+0111 08               30             INC R0
+                      31             
+0112 740A             32             MOV A,#0AH       ;45H(横线)
+0114 F6               33             MOV @R0,A
+0115 08               34             INC R0
+                      35             
+0116 7400             36             MOV A,#00H
+0118 F6               37             MOV @R0,A        ;46H
+0119 08               38             INC R0
+                      39             
+011A F6               40             MOV @R0,A        ;47H
+                      41             
+011B 753300           42             MOV BUF,#00H    ;置0
+011E 753200           43             MOV SBF,#00H
+0121 753100           44             MOV MBF,#00H
+0124 753000           45             MOV     HBF,#00H
+                      46     
+0127 7581EF           47             MOV SP,#0EFH
+                      48             
+012A 75360F           49             MOV 36H,#0FH
+012D                  50             MOV 37H,#
+*** __________________________________________^
+*** ERROR #A15 IN 50 (main.a51, LINE 50): MISSING FACTOR
+                      51             
+012D 758902           52             MOV TMOD,#2
+0130 758A06           53             MOV TL0,#6
+0133 758C06           54             MOV TH0,#6
+0136 D28C             55             SETB TR0
+A51 MACRO ASSEMBLER  MAIN                                                                 11/11/2021 09:25:05 PAGE     2
+
+0138 75A882           56             MOV IE,#82H
+013B 75B802           57             MOV IP,#2
+                      58             
+013E                  59             DS1:
+013E 7840             60                     MOV R0,#40H     ;置显示缓冲区首址
+0140 7A01             61                     MOV R2,#01H   ;置扫描初值,点亮最右边的LED6
+                      62                     
+0142                  63                     DS2:  
+0142 E6               64                             MOV A,@R0     ;得到的段显码输出到段数据口
+                      65                             
+0143 316B             66                             ACALL TABLE
+                      67                             
+0145 F580             68                             MOV P0,A
+0147 EA               69                             MOV A,R2        ;向位数据口P1输出位显码
+0148 F4               70                             CPL A
+0149 F590             71                             MOV P1,A   
+014B 7BFF             72                             MOV R3,#0FFH    ;延时一小段时间
+                      73                             
+014D                  74                             DEL:
+014D 00               75                                     NOP
+014E DBFD             76                             DJNZ R3,DEL
+                      77                             
+0150 08               78                             INC R0          ;显示缓冲字节加一
+0151 C3               79                             CLR C
+0152 EA               80                             MOV A,R2
+0153 33               81                             RLC A           ;显码右移一位
+0154 FA               82                             MOV R2,A      ;最末一位是否显示完毕?,如无则
+0155 70EB             83                     JNZ DS2         ;继续往下显示
+                      84                             
+0157 7847             85                     MOV R0,#47H
+0159 E532             86                     MOV A,SBF      ;把秒值分别放于46H,47H中
+                      87                     
+015B 3179             88                     ACALL GET
+                      89                     
+015D 18               90                     DEC R0         ;跳过负责显示"-"的两个字节
+                      91                     ;DEC R0
+015E E531             92                     MOV A,MBF      ;把分值分别放入43H,44H中
+                      93                     
+0160 3179             94                     ACALL GET
+                      95                     
+0162 18               96                     DEC R0
+                      97                     ;DEC R0
+0163 E530             98                     MOV A,HBF               ;把时值分别放入43H,44H中
+                      99                     
+0165 120179          100                     LCALL GET
+                     101                     
+0168 02013E          102             LJMP DS1                ;转DS1从头显示起
+                     103     
+016B                 104             TABLE:
+016B 04              105                     INC A           ;取与数字对应的段码
+016C 83              106                     MOVC A,@A+PC
+016D 22              107                     RET
+                     108                             
+016E 3F065B4F        109                     DB 3FH,06H,5BH,4FH,66H,6DH,7DH, 07H, 7FH,6FH, 40H
+0172 666D7D07                
+0176 7F6F40                  
+                     110                              
+0179                 111             GET:
+0179 F9              112                     MOV R1,A     ;把从分或秒字节中取来的值的高
+017A 540F            113                     ANL A,#0FH      ;位屏蔽掉,并送入缓冲区
+                     114                     
+017C F6              115                     MOV @R0,A
+017D 18              116                     DEC R0
+                     117                     
+017E E9              118                     MOV A,R1     ;把从分或秒字节中取来的值的低
+017F C4              119                     SWAP A          ;位屏蔽掉,并送入缓冲区
+A51 MACRO ASSEMBLER  MAIN                                                                 11/11/2021 09:25:05 PAGE     3
+
+0180 540F            120                     ANL A,#0FH
+                     121                     
+0182 F6              122                     MOV @R0,A
+0183 18              123                     DEC R0          ;R0指针下移一位
+0184 22              124             RET
+                     125     
+0185                 126             CLOCK:
+0185 C0D0            127                     PUSH PSW
+0187 C0E0            128                     PUSH ACC
+                     129                     
+0189 75D008          130                     MOV PSW,#8
+                     131                     
+018C D5372B          132                     DJNZ 37H,PTFOR
+                     133                     
+018F D53628          134                             DJNZ 36H,PTFOR
+                     135                             
+0192 75360F          136                                     MOV 36H,#0FH
+0195 7537A0          137                                     MOV 37H,#0A0H
+                     138                                     
+0198 7832            139                                     MOV R0,#32H
+019A E6              140                                     MOV A,@R0
+                     141                                     
+019B 2401            142                                     ADD A,#1
+019D D4              143                                     DA A
+                     144                                     
+019E F6              145                                     MOV @R0,A
+                     146                                     
+019F B46018          147                                     CJNE A,#60H,PTFOR
+01A2 7600            148                                             MOV @R0,#0
+01A4 18              149                                             DEC R0
+                     150                                             
+01A5 E6              151                                             MOV A,@R0
+                     152                                             
+01A6 2401            153                                             ADD A,#1
+01A8 D4              154                                             DA A
+                     155                                             
+01A9 F6              156                                             MOV @R0,A
+                     157                                             
+01AA B4600D          158                                             CJNE A,#60H,PTFOR
+01AD 7600            159                                                     MOV @R0,#0
+01AF 18              160                                                     DEC R0
+                     161                                                     
+01B0 E6              162                                                     MOV A,@R0
+                     163                                                     
+01B1 2401            164                                                     ADD A,#1
+01B3 D4              165                                                     DA A
+                     166                                                     
+01B4 F6              167                                                     MOV @R0,A
+                     168                                                     
+01B5 B41802          169                                                     CJNE A,#24,PTFOR
+01B8 7600            170                                                             MOV @R0,#0
+01BA                 171                     PTFOR:
+01BA D0E0            172                     POP ACC
+01BC D0D0            173                     POP PSW 
+01BE 32              174             RETI               ;中断返回
+                     175             
+                     176     END
+A51 MACRO ASSEMBLER  MAIN                                                                 11/11/2021 09:25:05 PAGE     4
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ACC. . . . . . . .  D ADDR   00E0H   A   
+BUF. . . . . . . .  N NUMB   0033H   A   
+CLOCK. . . . . . .  C ADDR   0185H   A   
+DEL. . . . . . . .  C ADDR   014DH   A   
+DS1. . . . . . . .  C ADDR   013EH   A   
+DS2. . . . . . . .  C ADDR   0142H   A   
+GET. . . . . . . .  C ADDR   0179H   A   
+HBF. . . . . . . .  N NUMB   0030H   A   
+IE . . . . . . . .  D ADDR   00A8H   A   
+IP . . . . . . . .  D ADDR   00B8H   A   
+MBF. . . . . . . .  N NUMB   0031H   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+PSW. . . . . . . .  D ADDR   00D0H   A   
+PTFOR. . . . . . .  C ADDR   01BAH   A   
+SBF. . . . . . . .  N NUMB   0032H   A   
+SP . . . . . . . .  D ADDR   0081H   A   
+START. . . . . . .  C ADDR   0100H   A   
+TABLE. . . . . . .  C ADDR   016BH   A   
+TH0. . . . . . . .  D ADDR   008CH   A   
+TL0. . . . . . . .  D ADDR   008AH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR0. . . . . . . .  B ADDR   0088H.4 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 1 ERROR(S)

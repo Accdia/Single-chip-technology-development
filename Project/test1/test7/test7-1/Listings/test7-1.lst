@@ -1,0 +1,49 @@
+C51 COMPILER V9.60.0.0   TEST7_1                                                           11/09/2021 23:18:25 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE TEST7_1
+OBJECT MODULE PLACED IN .\Objects\test7-1.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE test7-1.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\t
+                    -est7-1.lst) TABS(2) OBJECT(.\Objects\test7-1.obj)
+
+line level    source
+
+   1          #include<reg51.h>
+   2          #define uchar unsigned char
+   3          char code map[]={0x7e,0x79,0x38,0x39,0x5c,0x37, 0x78,0x5c, 0x78,0x76,0x79, 0x37,0x39,0x3e, 0x7e,0x5c,0x31,
+             -0x38,0x5e};
+   4          
+   5          void delay(unsigned int time){
+   6   1          unsigned int j = 0;
+   7   1          for(;time>0;time--)
+   8   1          for(j=0;j<125;j++);
+   9   1      }
+  10          void main(void){
+  11   1          int counter=0;
+  12   1          TMOD=0x20;
+  13   1          TH1 = TL1 = 0xf4;
+  14   1          PCON=0;
+  15   1          SCON = 0X50;
+  16   1          EA=ES=TR1=1;
+  17   1          while(1){
+  18   2              SBUF = map[counter];
+  19   2              while(TI==0);
+  20   2              TI=0;
+  21   2              if(++counter>18) counter=0;
+  22   2              delay(1000);
+  23   2          }
+  24   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    100    ----
+   CONSTANT SIZE    =     19    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

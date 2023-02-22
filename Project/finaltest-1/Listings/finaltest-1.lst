@@ -1,0 +1,80 @@
+A51 MACRO ASSEMBLER  FINALTEST_1                                                          11/09/2021 20:37:50 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+NO OBJECT MODULE REQUESTED
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE finaltest-1.a51 SET(SMALL) DEBUG PRINT(.\Listings\finaltest-1.lst) OBJE
+                      CT(.\Objects\finaltest-1.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG 0000H
+0000 020100            2     LJMP MAINT
+0023                   3     ORG 0023H
+0023 020300            4     LJMP INTSE1
+0100                   5     ORG 0100H
+0100 759840            6     MAINT: MOV SCON,#40H
+0103 758920            7     MOV TMOD,#20H
+0106 758700            8     MOV PCON,#0
+0109 758D72            9     MOV TH1,#72H
+010C 758B72           10     MOV TL1,#72H
+010F D28E             11     SETB TR1
+0111 D2AF             12     SETB EA
+0113 D2AC             13     SETB ES
+0115 900120           14     MOV DPTR,#ADDRT
+0118 7800             15     MOV R0,#00H
+                      16     
+011A 93               17     MOVC A,@A+DPTR
+011B F599             18     MOV SBUF,A
+011D E4               19     CLR A
+011E 80FE             20     SJMP $
+0120 00002212         21     ADDRT:DB 0G0H,22H,12H,11H,0AAH,0F0H,99H,0DH,56H,00H,13H,65H,0EH,0FFH,73H,0BBH
+0124 11AAF099                
+0128 0D560013                
+012C 650EFF73                
+0120                  21     ADDRT:DB 0G0H,22H,12H,11H,0AAH,0F0H,99H,0DH,56H,00H,13H,65H,0EH,0FFH,73H,0BBH
+*** ___________________________________^
+*** ERROR #A34 IN 21 (finaltest-1.a51, LINE 21): ',' EXPECTED
+0300                  22     ORG 0300H
+0300 C299             23     INTSE1:CLR TI
+0302 B81004           24     CJNE R0,#10H,LOOP
+                      25     
+0305 C2AC             26     CLR ES
+0307 8006             27     SJMP ENDT
+0309 08               28     LOOP:INC R0
+030A A3               29     INC DPTR
+030B 93               30     MOVC A,@A+DPTR
+030C F599             31     MOV SBUF,A
+030E E4               32     CLR A
+030F 32               33     ENDT:RETI
+                      34     END
+A51 MACRO ASSEMBLER  FINALTEST_1                                                          11/09/2021 20:37:50 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ADDRT. . . . . . .  C ADDR   0120H   A   
+EA . . . . . . . .  B ADDR   00A8H.7 A   
+ENDT . . . . . . .  C ADDR   030FH   A   
+ES . . . . . . . .  B ADDR   00A8H.4 A   
+G0H. . . . . . . .    ----   -----       
+INTSE1 . . . . . .  C ADDR   0300H   A   
+LOOP . . . . . . .  C ADDR   0309H   A   
+MAINT. . . . . . .  C ADDR   0100H   A   
+PCON . . . . . . .  D ADDR   0087H   A   
+SBUF . . . . . . .  D ADDR   0099H   A   
+SCON . . . . . . .  D ADDR   0098H   A   
+TH1. . . . . . . .  D ADDR   008DH   A   
+TI . . . . . . . .  B ADDR   0098H.1 A   
+TL1. . . . . . . .  D ADDR   008BH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR1. . . . . . . .  B ADDR   0088H.6 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 1 ERROR(S)

@@ -1,0 +1,10 @@
+SET C51INC=C:\Keil_v5\C51\Inc
+SET C51LIB=C:\Keil_v5\C51\Lib
+SET CPU_TYPE=87C51
+SET CPU_VENDOR=Intel
+SET UV2_TARGET=Target 1
+SET CPU_XTAL=0x00B71B00
+"C:\Keil_v5\C51\BIN\A51.EXE" @".\Objects\STARTUP._ia"
+"C:\Keil_v5\C51\BIN\A51.EXE" @".\Objects\FINALT~1._IA"
+"C:\Keil_v5\C51\BIN\BL51.EXE" @".\Objects\FINALT~1.LNP"
+"C:\Keil_v5\C51\BIN\OH51.EXE" ".\Objects\finaltest-1" 

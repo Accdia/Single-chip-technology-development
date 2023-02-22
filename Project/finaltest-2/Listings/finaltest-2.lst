@@ -1,0 +1,68 @@
+A51 MACRO ASSEMBLER  FINALTEST_2                                                          11/09/2021 20:24:30 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\finaltest-2.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE finaltest-2.a51 SET(SMALL) DEBUG PRINT(.\Listings\finaltest-2.lst) OBJE
+                      CT(.\Objects\finaltest-2.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG 0000H
+0000 020100            2     LJMP MAINR
+0023                   3     ORG 0023H
+0023 020300            4     LJMP INTSE2
+0100                   5     ORG 0100H
+0100 759850            6     MAINR:MOV SCON,#50H
+0103 758920            7     MOV TMOD,#20H
+0106 758700            8     MOV PCON,#0
+0109 758D72            9     MOV TH1,#72H
+010C 758B72           10     MOV TL1,#72H
+010F D28E             11     SETB TR1
+0111 D2AF             12     SETB EA
+0113 D2AC             13     SETB ES
+0115 90011C           14     MOV DPTR,#ADDRR
+0118 7800             15     MOV R0,#00H
+011A 80FE             16     SJMP $
+011C                  17     ADDRR:DS 80H
+0300                  18     ORG 0300H
+0300 C298             19     INTSE2:CLR RI
+0302 E599             20     MOV A,SBUF
+0304 F0               21     MOVX @DPTR,A
+0305 F590             22     MOV P1,A
+0307 08               23     INC R0
+0308 A3               24     INC DPTR
+0309 B88002           25     CJNE R0,#80H,LOOP
+                      26     
+030C C2AC             27     CLR ES
+030E 32               28     LOOP:RETI
+                      29     END
+A51 MACRO ASSEMBLER  FINALTEST_2                                                          11/09/2021 20:24:30 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ADDRR. . . . . . .  C ADDR   011CH   A   
+EA . . . . . . . .  B ADDR   00A8H.7 A   
+ES . . . . . . . .  B ADDR   00A8H.4 A   
+INTSE2 . . . . . .  C ADDR   0300H   A   
+LOOP . . . . . . .  C ADDR   030EH   A   
+MAINR. . . . . . .  C ADDR   0100H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+PCON . . . . . . .  D ADDR   0087H   A   
+RI . . . . . . . .  B ADDR   0098H.0 A   
+SBUF . . . . . . .  D ADDR   0099H   A   
+SCON . . . . . . .  D ADDR   0098H   A   
+TH1. . . . . . . .  D ADDR   008DH   A   
+TL1. . . . . . . .  D ADDR   008BH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR1. . . . . . . .  B ADDR   0088H.6 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

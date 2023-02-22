@@ -1,0 +1,122 @@
+A51 MACRO ASSEMBLER  TEST1                                                                09/30/2021 10:44:31 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\test1.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE test1.a51 SET(SMALL) DEBUG PRINT(.\Listings\test1.lst) OBJECT(.\Objects
+                      \test1.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+  0002                 1     BYTES EQU 2             
+0000                   2     ORG 0000H
+0000 020100            3     LJMP MAIN
+0100                   4     ORG 0100H
+0100                   5     MAIN:
+0100 75312E            6     MOV 31H,#2EH
+0103 7530A3            7     MOV 30H,#0A3H
+0106 754157            8     MOV 41H,#57H
+0109 75401D            9     MOV 40H,#1DH
+010C 7830             10     MOV R0,#30H             
+010E 7950             11     MOV R1,#50H             
+0110 120126           12     LCALL BINBCD    
+0113 7840             13     MOV R0,#40H             
+0115 7960             14     MOV R1,#60H             
+0117 120126           15     LCALL BINBCD
+011A 7850             16     MOV R0,#50H             
+011C 7960             17     MOV R1,#60H             
+011E 7A03             18     MOV R2,#3
+0120 12015C           19     LCALL ADDP      
+0123 020123           20     LJMP $
+                      21     ;
+0126                  22     BINBCD:
+0126 7B02             23     MOV R3,#BYTES
+0128 0B               24     INC R3
+0129 E4               25     CLR A
+012A                  26     RB4:
+012A F7               27     MOV @R1,A
+012B 09               28     INC R1
+012C DBFC             29     DJNZ R3,RB4
+012E 7B02             30     MOV R3,#BYTES
+0130 0B               31     INC R3
+0131                  32     RB6:
+0131 19               33     DEC R1
+0132 DBFD             34     DJNZ R3,RB6
+0134 7402             35     MOV A,#BYTES
+                      36     ;INC R3
+0136 75F008           37     MOV B,#8
+0139 A4               38     MUL AB
+013A FF               39     MOV R7,A
+013B                  40     LOOP:
+013B 7B02             41     MOV R3,#BYTES
+013D C3               42     CLR C
+013E                  43     RB1:
+013E E6               44     MOV A,@R0
+013F 33               45     RLC A
+0140 F6               46     MOV @R0,A
+0141 08               47     INC R0
+0142 DBFA             48     DJNZ R3,RB1
+0144 7B02             49     MOV R3,#BYTES
+0146                  50     RB3:
+0146 18               51     DEC R0
+0147 DBFD             52     DJNZ R3,RB3
+0149 7B02             53     MOV R3,#BYTES
+014B 0B               54     INC R3
+014C                  55     RB2:
+014C E7               56     MOV A,@R1
+014D 37               57     ADDC A,@R1
+A51 MACRO ASSEMBLER  TEST1                                                                09/30/2021 10:44:31 PAGE     2
+
+014E D4               58     DA A
+                      59     
+                      60     
+014F F7               61     MOV @R1,A
+0150 09               62     INC R1
+0151 DBF9             63     DJNZ R3,RB2
+0153 7B02             64     MOV R3,#BYTES
+0155 0B               65     INC R3
+0156                  66     RB5:
+0156 19               67     DEC R1
+0157 DBFD             68     DJNZ R3,RB5
+0159 DFE0             69     DJNZ R7,LOOP
+015B 22               70     RET
+                      71     
+015C                  72     ADDP:
+015C E6               73     MOV  A,@R0
+015D 37               74     ADDC A,@R1
+015E D4               75     DA A
+015F F6               76     MOV @R0,A
+0160 08               77     INC R0
+0161 09               78     INC R1
+0162 DAF8             79     DJNZ R2,ADDP
+0164 22               80     RET
+                      81     
+                      82     END
+                             
+                             
+A51 MACRO ASSEMBLER  TEST1                                                                09/30/2021 10:44:31 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ADDP . . . . . . .  C ADDR   015CH   A   
+B. . . . . . . . .  D ADDR   00F0H   A   
+BINBCD . . . . . .  C ADDR   0126H   A   
+BYTES. . . . . . .  N NUMB   0002H   A   
+LOOP . . . . . . .  C ADDR   013BH   A   
+MAIN . . . . . . .  C ADDR   0100H   A   
+RB1. . . . . . . .  C ADDR   013EH   A   
+RB2. . . . . . . .  C ADDR   014CH   A   
+RB3. . . . . . . .  C ADDR   0146H   A   
+RB4. . . . . . . .  C ADDR   012AH   A   
+RB5. . . . . . . .  C ADDR   0156H   A   
+RB6. . . . . . . .  C ADDR   0131H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
